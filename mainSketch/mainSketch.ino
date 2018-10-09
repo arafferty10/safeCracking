@@ -53,24 +53,24 @@ void loop() {
     switch(incoming){
       case 1:
 
-      break;
+        break;
       case 2:
 
-      break;
+        break;
       case 3:
 
-      break;
+        break;
       case 4:
 
-      break;
+        break;
       case 5:
 
-      break;
+        break;
       case 6:
 
-      break;
+        break;
       default:
-      break;
+        break;
     }
   }
 
