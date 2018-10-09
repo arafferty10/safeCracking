@@ -5,3 +5,6 @@ Parts List - https://docs.google.com/spreadsheets/d/1XabOUtS-7bFRwG6XeN5u8nKVINY
 
 # Personal Repos
 * Lou - https://github.com/lume2651/safe-cracking 
+* Aidan - https://github.com/arafferty10/personalSafeCracking
+* Toby - https://github.com/towu1344/Safe-Cracking
+
