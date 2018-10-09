@@ -1,9 +1,38 @@
+
+void rotateCCW(int steps){
+
+
+}
+
+int setDialSpeed(int _rotationSpeed) {
+
+  return rotationSpeed;
+}
+
+bool detectFlag(){
+
+  return detectedFlag;
+}
+
+bool phoneHome(){
+
+  return atHome;
+}
+
 void setup() {
-  // put your setup code here, to run once:
+
+  Serial.begin(9600);
+  Serial.println();
+  Serial.println();
+  Serial.println("go");
 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+
+  Serial.println();
+  Serial.println();
+  Serial.println("Main Menu");
+
 
 }
