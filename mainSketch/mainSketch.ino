@@ -1,15 +1,36 @@
+#include <EEPROM.h>
+
+// EEPROM Storage Locations
+const int DIAL_ROTATION_SPEED = 0;
+
+// Pin layout
+const int motorControl = 6;
+const int photo = 7;
+
+
+
+
 
 void rotateCCW(int steps){
 
 
 }
 
+// Sets rotation speed of dial motor
+// Expects value between 0-100%
 int setDialSpeed(int _rotationSpeed) {
 
-  return rotationSpeed;
+  int rotSpeed = map(_rotationSpeed, 0, 100, 0, 255);
+  analogWrite(motorControl, rotSpeed);
+  EEPROM.put(rotSpeed, DIAL_ROTATION_SPEED);
+  Serial.print(F("Dial speed set to: "));
+  Serial.println(rotSpeed);
+
+  return _rotationSpeed;
 }
 
 bool detectFlag(){
+
 
   return detectedFlag;
 }
