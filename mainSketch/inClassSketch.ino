@@ -1,4 +1,4 @@
-void setup(){
+/*void setup(){
   Serial.begin(9600);
   Serial.println("Terminal");
 }
@@ -18,7 +18,7 @@ void loop
 
       while(Serial.available() == 0);
       Serial.setTimeout(1000);
-      
+
       int dialPos = Serial.parseInt();
 
       Serial.print("Going to: ");
@@ -26,7 +26,8 @@ void loop
     }
     else if (incoming =='t')
     {
-      
+
     }
   }
 }
+*/
