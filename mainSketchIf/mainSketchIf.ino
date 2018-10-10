@@ -9,7 +9,7 @@ const int DIAL_ROTATION_SPEED = 0;
 // Pin layout
 const int motorControl = 6;
 const int photo = 7;
-const int motorRester = 8;
+const int motorReset = 8;
 const int motorDir = 10;
 
 volatile int steps = 0;
@@ -18,7 +18,7 @@ boolean prevDir = CW;
 
 
 void rotateCCW(int _steps){
-  if(direction != 0){
+  if(dir != 0){
     digitalWrite(motorDir, LOW);
   }
 
@@ -32,21 +32,20 @@ void rotateCCW(int _steps){
 }
 
 int stepsRequired(int curSteps, int dest){
-  if(direction == CW){
+  if(dir == CW){
     if( curSteps >= dest) {
       return (curSteps - dest);
     } else if(curSteps < dest){
       return (8400 - dest + curSteps);
     }
-  } else if(direction == CCW){
+  } else if(dir == CCW){
     if(curSteps >= dest){
       return (8400 - curSteps + dest);
-    } else if(curSteps < goal){
+    } else if(curSteps < dest){
       return (dest - curSteps);
     }
   }
 }
-
 
 void enableMotor(){
   digitalWrite(motorReset, HIGH);
@@ -55,6 +54,7 @@ void enableMotor(){
 void disableMotor(){
   digitalWrite(motorReset, LOW);
 }
+
 // Sets rotation speed of dial motor
 // Expects value between 0-100%
 int setDialSpeed(int _rotationSpeed) {
@@ -70,12 +70,12 @@ int setDialSpeed(int _rotationSpeed) {
 bool detectFlag(){
 
 
-  return detectedFlag;
+  // return detectedFlag;
 }
 
 bool phoneHome(){
 
-  return atHome;
+  // return atHome;
 }
 
 void setup() {
@@ -91,9 +91,10 @@ void setup() {
 
 void loop() {
 
+  int incoming;
+
   while(!Serial.available())
   {
-    int incoming;
 
     Serial.println();
     Serial.println();
@@ -112,7 +113,7 @@ void loop() {
 
   if(incoming == 1)
   {
-    char c = EEPROM.get(DIAL_ROTATION_SPEED);
+    //char c = EEPROM.get(DIAL_ROTATION_SPEED);
     Serial.println();
     Serial.print("Dial Rotation Speed: ");
     Serial.println(c);
@@ -121,7 +122,7 @@ void loop() {
 
   else if(incoming == 2)
   {
-    
+
   }
 
 }
