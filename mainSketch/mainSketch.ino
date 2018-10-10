@@ -91,32 +91,33 @@ void setup() {
 
 void loop() {
 
-  int incoming;
+  while(!Serial.available())
+  {
+    int incoming;
 
-  Serial.println();
-  Serial.println();
-  Serial.println("Main Menu");
-  Serial.println(F("1. Display settings"));
-  Serial.println(F("2. "));
-  Serial.println(F("3. "));
-  Serial.println(F("4. "));
-  Serial.println(F("5. "));
-  Serial.println(F("6. Start Cracking!"));
-  Serial.println();
-  Serial.print(F("Enter your choice"));
-
-
-  while(!Serial.available()){
+    Serial.println();
+    Serial.println();
+    Serial.println("Main Menu");
+    Serial.println(F("1. Display settings"));
+    Serial.println(F("2. "));
+    Serial.println(F("3. "));
+    Serial.println(F("4. "));
+    Serial.println(F("5. "));
+    Serial.println(F("6. Start Cracking!"));
+    Serial.println();
+    Serial.print(F("Enter your choice"));
 
     incoming = Serial.parseInt();
+  }
 
-    switch(incoming){
-      case 1:
-        char c = EEPROM.get(DIAL_ROTATION_SPEED);
-        Serial.println();
-        Serial.print("Dial Rotation Speed: ");
-        Serial.println(c);
-        break;
+  if(incoming == 1)
+  {
+    char c = EEPROM.get(DIAL_ROTATION_SPEED);
+    Serial.println();
+    Serial.print("Dial Rotation Speed: ");
+    Serial.println(c);
+    break;
+  }
       case 2:
 
         break;
@@ -134,7 +135,5 @@ void loop() {
         break;
       default:
         break;
-    }
-  }
 
 }
