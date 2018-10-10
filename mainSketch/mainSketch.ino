@@ -84,8 +84,7 @@ void setup() {
 
   Serial.begin(9600);
   Serial.println();
-  Serial.println();
-  Serial.println("go");
+  Serial.println("Safe Cracker");
 
 }
 
@@ -94,25 +93,34 @@ void loop() {
   char incoming;
 
   // Print text menu
-  // Serial.println();
-  // Serial.println();
-  // Serial.println("Main Menu");
-  // Serial.println(F("1. Display settings"));
-  // Serial.println(F("2. placeholder option"));
-  // Serial.println(F("3. placeholder option"));
-  // Serial.println(F("4. placeholder option"));
-  // Serial.println(F("5. placeholder option"));
-  // Serial.println(F("6. Start Cracking!"));
-  // Serial.println();
-  // Serial.print(F("Enter your choice"));
+  Serial.println();
+  Serial.println("Main Menu");
+  Serial.println(F("1. Display settings"));
+  Serial.println(F("2. placeholder option"));
+  Serial.println(F("3. placeholder option"));
+  Serial.println(F("4. placeholder option"));
+  Serial.println(F("5. placeholder option"));
+  Serial.println(F("6. Start Cracking!"));
+  Serial.println();
+  Serial.print(F("Enter your choice"));
+
+  while(!Serial.available());
+
 
   incoming = Serial.read();
 
-  if(incoming == '1'){
-    Serial.println("Case 1!");
-  } else if(incoming == '2'){
+  // while(!Serial.available()){
+    if(incoming == '1'){
+      Serial.println("Case 1!");
+    } else if(incoming == '2'){
+      Serial.println("Case 2!");
+    } else if(incoming == '3'){
+      Serial.println("Case 3!");
+    }else if(incoming == '4'){
+      Serial.println("Case 4!");
+    }
 
-  }
+  // }
 
   // while(!Serial.available()){
   //
