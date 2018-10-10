@@ -9,7 +9,7 @@ const int DIAL_ROTATION_SPEED = 0;
 // Pin layout
 const int motorControl = 6;
 const int photo = 7;
-const int motorRester = 8;
+const int motorReset = 8;
 const int motorDir = 10;
 
 volatile int steps = 0;
@@ -18,7 +18,7 @@ boolean prevDir = CW;
 
 
 void rotateCCW(int _steps){
-  if(direction != 0){
+  if(dir != 0){
     digitalWrite(motorDir, LOW);
   }
 
@@ -32,21 +32,20 @@ void rotateCCW(int _steps){
 }
 
 int stepsRequired(int curSteps, int dest){
-  if(direction == CW){
+  if(dir == CW){
     if( curSteps >= dest) {
       return (curSteps - dest);
     } else if(curSteps < dest){
       return (8400 - dest + curSteps);
     }
-  } else if(direction == CCW){
+  } else if(dir == CCW){
     if(curSteps >= dest){
       return (8400 - curSteps + dest);
-    } else if(curSteps < goal){
+    } else if(curSteps < dest){
       return (dest - curSteps);
     }
   }
 }
-
 
 void enableMotor(){
   digitalWrite(motorReset, HIGH);
@@ -55,6 +54,7 @@ void enableMotor(){
 void disableMotor(){
   digitalWrite(motorReset, LOW);
 }
+
 // Sets rotation speed of dial motor
 // Expects value between 0-100%
 int setDialSpeed(int _rotationSpeed) {
@@ -70,19 +70,19 @@ int setDialSpeed(int _rotationSpeed) {
 bool detectFlag(){
 
 
-  return detectedFlag;
+  // return detectedFlag;
 }
 
 bool phoneHome(){
 
-  return atHome;
+  // return atHome;
 }
 
 void setup() {
 
   pinMode(photo, INPUT_PULLUP);
 
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.println();
   Serial.println();
   Serial.println("go");
@@ -91,50 +91,28 @@ void setup() {
 
 void loop() {
 
-  int incoming;
+  char incoming;
 
+  // Print text menu
   Serial.println();
   Serial.println();
   Serial.println("Main Menu");
   Serial.println(F("1. Display settings"));
-  Serial.println(F("2. "));
-  Serial.println(F("3. "));
-  Serial.println(F("4. "));
-  Serial.println(F("5. "));
+  Serial.println(F("2. placeholder option"));
+  Serial.println(F("3. placeholder option"));
+  Serial.println(F("4. placeholder option"));
+  Serial.println(F("5. placeholder option"));
   Serial.println(F("6. Start Cracking!"));
   Serial.println();
   Serial.print(F("Enter your choice"));
 
-
-  while(!Serial.available()){
-
-    incoming = Serial.parseInt();
-
-    switch(incoming){
-      case 1:
-        char c = EEPROM.get(DIAL_ROTATION_SPEED);
-        Serial.println();
-        Serial.print("Dial Rotation Speed: ");
-        Serial.println(c);
-        break;
-      case 2:
-
-        break;
-      case 3:
-
-        break;
-      case 4:
-
-        break;
-      case 5:
-
-        break;
-      case 6:
-
-        break;
-      default:
-        break;
-    }
-  }
+  // while(!Serial.available()){
+  //
+  //   while(Serial.available());
+  //   incoming = Serial.read();
+  //   Serial.print("Incoming serial: ");
+  //   Serial.println(incoming);
+  //
+  // }
 
 }
