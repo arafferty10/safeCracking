@@ -82,7 +82,7 @@ void setup() {
 
   pinMode(photo, INPUT_PULLUP);
 
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial.println();
   Serial.println();
   Serial.println("go");
@@ -94,17 +94,25 @@ void loop() {
   char incoming;
 
   // Print text menu
-  Serial.println();
-  Serial.println();
-  Serial.println("Main Menu");
-  Serial.println(F("1. Display settings"));
-  Serial.println(F("2. placeholder option"));
-  Serial.println(F("3. placeholder option"));
-  Serial.println(F("4. placeholder option"));
-  Serial.println(F("5. placeholder option"));
-  Serial.println(F("6. Start Cracking!"));
-  Serial.println();
-  Serial.print(F("Enter your choice"));
+  // Serial.println();
+  // Serial.println();
+  // Serial.println("Main Menu");
+  // Serial.println(F("1. Display settings"));
+  // Serial.println(F("2. placeholder option"));
+  // Serial.println(F("3. placeholder option"));
+  // Serial.println(F("4. placeholder option"));
+  // Serial.println(F("5. placeholder option"));
+  // Serial.println(F("6. Start Cracking!"));
+  // Serial.println();
+  // Serial.print(F("Enter your choice"));
+
+  incoming = Serial.read();
+
+  if(incoming == '1'){
+    Serial.println("Case 1!");
+  } else if(incoming == '2'){
+
+  }
 
   // while(!Serial.available()){
   //
