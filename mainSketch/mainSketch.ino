@@ -102,7 +102,7 @@ void loop() {
   Serial.println(F("5. placeholder option"));
   Serial.println(F("6. Start Cracking!"));
   Serial.println();
-  Serial.print(F("Enter your choice"));
+  Serial.println(F("Enter your choice"));
 
   while(!Serial.available());
 
@@ -118,6 +118,9 @@ void loop() {
       Serial.println("Case 3!");
     }else if(incoming == '4'){
       Serial.println("Case 4!");
+    } else {
+      Serial.print("Unknown Option: ");
+      Serial.println(incoming, HEX);
     }
 
   // }
