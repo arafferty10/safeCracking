@@ -10,7 +10,7 @@ const int DIAL_ROTATION_SPEED = 0;
 const int motorControl = 6;
 const int photo = 7;
 const int motorReset = 8;
-const int motorDir = 10;
+const int motorDir = 3;
 
 volatile int steps = 0;
 boolean dir = CW;
@@ -18,14 +18,18 @@ boolean prevDir = CW;
 
 
 void rotateCCW(int _steps){
-  if(dir != 0){
+    Serial.println("inside rotateCCW()");
+//  if(dir != 0){
     digitalWrite(motorDir, LOW);
-  }
+//  } else {
+//    digitalWrite(motorDir, HIGH);
+//  }
 
   int stepsLeft = _steps;
 
   while(stepsLeft > 0){
-    analogWrite(motorControl, 200);
+    Serial.println("trying to turn...");
+    analogWrite(motorControl, 255);
     stepsLeft--;
   }
   analogWrite(motorControl, 0);
@@ -81,7 +85,11 @@ bool phoneHome(){
 void setup() {
 
   pinMode(photo, INPUT_PULLUP);
+  pinMode(motorDir, OUTPUT);
+  pinMode(motorControl, OUTPUT);
+  pinMode(motorReset, OUTPUT);
 
+  enableMotor();
   Serial.begin(9600);
   Serial.println();
   Serial.println("Safe Cracker");
@@ -95,7 +103,7 @@ void loop() {
   // Print text menu
   Serial.println();
   Serial.println("Main Menu");
-  Serial.println(F("1. Display settings"));
+  Serial.println(F("1. Rotate motor"));
   Serial.println(F("2. placeholder option"));
   Serial.println(F("3. placeholder option"));
   Serial.println(F("4. placeholder option"));
@@ -112,6 +120,8 @@ void loop() {
   // while(!Serial.available()){
     if(incoming == '1'){
       Serial.println("Case 1!");
+      Serial.print("Rotating...");
+      rotateCCW(32);
     } else if(incoming == '2'){
       Serial.println("Case 2!");
     } else if(incoming == '3'){
