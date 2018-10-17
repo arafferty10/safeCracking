@@ -18,12 +18,9 @@ boolean prevDir = CW;
 
 
 void rotateCCW(int _steps){
-    Serial.println("inside rotateCCW()");
-//  if(dir != 0){
-    digitalWrite(motorDir, LOW);
-//  } else {
-//    digitalWrite(motorDir, HIGH);
-//  }
+  Serial.println("inside rotateCCW()");
+
+  digitalWrite(motorDir, LOW);
 
   int stepsLeft = _steps;
 
