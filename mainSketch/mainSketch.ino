@@ -70,9 +70,12 @@ int setDialSpeed(int _rotationSpeed) {
 
 bool detectFlag(){
 
-  if(digitalRead(photo) == LOW) return (true);
+  if(digitalRead(photo) == LOW) {
+    Serial.println("FLAG DETECTED");
+    return (true);
+  }
   return (false);
-  // return detectedFlag;
+  
 }
 
 bool phoneHome(){
@@ -102,7 +105,7 @@ void loop() {
   Serial.println();
   Serial.println("Main Menu");
   Serial.println(F("1. Rotate motor"));
-  Serial.println(F("2. placeholder option"));
+  Serial.println(F("2. Detech Flag"));
   Serial.println(F("3. placeholder option"));
   Serial.println(F("4. placeholder option"));
   Serial.println(F("5. placeholder option"));
@@ -121,6 +124,7 @@ void loop() {
       Serial.print("Rotating...");
       rotateCCW(32);
     } else if(incoming == '2'){
+      detectFlag();
       Serial.println("Case 2!");
     } else if(incoming == '3'){
       Serial.println("Case 3!");
