@@ -70,7 +70,8 @@ int setDialSpeed(int _rotationSpeed) {
 
 bool detectFlag(){
 
-
+  if(digitalRead(photo) == LOW) return (true);
+  return (false);
   // return detectedFlag;
 }
 
