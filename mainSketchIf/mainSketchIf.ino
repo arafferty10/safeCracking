@@ -93,35 +93,35 @@ void loop() {
 
   int incoming;
 
+  Serial.println();
+  Serial.println();
+  Serial.println("Main Menu");
+  Serial.println(F("1. Display settings"));
+  Serial.println(F("2. "));
+  Serial.println(F("3. "));
+  Serial.println(F("4. "));
+  Serial.println(F("5. "));
+  Serial.println(F("6. Start Cracking!"));
+  Serial.println();
+  Serial.print(F("Enter your choice"));
+
+  incoming = Serial.parseInt();
+
   while(!Serial.available())
   {
+    if(incoming == 1)
+    {
+      while(Serial.available() == 0);
+      Serial.setTimeout(1000);
+      //char c = EEPROM.get(DIAL_ROTATION_SPEED);
+      Serial.println();
+      Serial.print("Dial Rotation Speed: ");
+    }
 
-    Serial.println();
-    Serial.println();
-    Serial.println("Main Menu");
-    Serial.println(F("1. Display settings"));
-    Serial.println(F("2. "));
-    Serial.println(F("3. "));
-    Serial.println(F("4. "));
-    Serial.println(F("5. "));
-    Serial.println(F("6. Start Cracking!"));
-    Serial.println();
-    Serial.print(F("Enter your choice"));
+    else if(incoming == 2)
+    {
 
-    incoming = Serial.parseInt();
-  }
-
-  if(incoming == 1)
-  {
-    //char c = EEPROM.get(DIAL_ROTATION_SPEED);
-    Serial.println();
-    Serial.print("Dial Rotation Speed: ");
-    Serial.println(c);
-    break;
-  }
-
-  else if(incoming == 2)
-  {
+    }
 
   }
 
