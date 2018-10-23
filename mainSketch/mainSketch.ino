@@ -171,6 +171,7 @@ void setup() {
 
 }
 
+//-----------------------------------------------------
 void loop() {
 
   char incoming;
@@ -204,6 +205,7 @@ void loop() {
       detectFlag();
       Serial.println("Case 2!");
     }
+    //-----------------------------------------------------
     else if(incoming == '3')
     {
       Serial.println("Case 3!");
@@ -214,7 +216,7 @@ void loop() {
       Serial.println(homeOffset);
 
       int zeroLocation = 0;
-      
+
       while (1) //Error checking
       {
         Serial.print(F("Enter where dial is actually at: "));
@@ -246,6 +248,7 @@ void loop() {
       Serial.println(F("Dial should be at: 0"));
 
     }
+    //-----------------------------------------------------
     else if(incoming == '4')
     {
       Serial.println("Case 4!");
