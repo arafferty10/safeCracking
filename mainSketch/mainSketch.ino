@@ -5,6 +5,7 @@
 // EEPROM Storage Locations
 const int DIAL_ROTATION_SPEED = 0;
 
+#define LOCATION_HOME_OFFSET 0
 
 // Pin layout
 const int motorControl = 6;
@@ -15,6 +16,12 @@ const int motorDir = 3;
 volatile int steps = 0;
 boolean dir = CW;
 boolean prevDir = CW;
+
+byte homeOffset = 0;
+
+const int timeMotorStop = 125;
+
+int switchDirectionAdjustment = (84 * 0) + 0; //Use 'Test dial control' to determine adjustment size
 
 //Rotate the dial Counter Clockwise
 //-----------------------------------------------------
@@ -52,6 +59,75 @@ int stepsRequired(int curSteps, int dest){
     }
   }
 }
+//-----------------------------------------------------
+
+//Given a step value, go to that step
+//Returns the delta from what you asked and where it ended up
+//Adding a full rotation will add a 360 degree full rotation
+int gotoStep(int stepGoal, boolean addAFullRotation)
+{
+  //Coarse speed and window control how fast we arrive at the digit on the dial
+  //Having too small of a window or too fast of an attack will make the dial
+  //overshoot.
+  int coarseSpeed = 200; //Speed at which we get to coarse window (0-255). 150, 200 works. 210, 230 fails
+  int coarseWindow = 1250; //Once we are within this amount, switch to fine adjustment
+  int fineSpeed = 50; //Less than 50 may not have enough torque
+  int fineWindow = 32; //One we are within this amount, stop searching
+
+  //Because we're switching directions we need to add extra steps to take
+  //up the slack in the encoder
+  if (dir == CW && prevDir == CCW)
+  {
+    steps += switchDirectionAdjustment;
+    if (steps > 8400) steps -= 8400;
+    prevDir = CW;
+  }
+  else if (dir == CCW && prevDir == CW)
+  {
+    steps -= switchDirectionAdjustment;
+    if (steps < 0) steps += 8400;
+    prevDir = CCW;
+  }
+
+  setMotorSpeed(coarseSpeed); //Go!
+  while (stepsRequired(steps, stepGoal) > coarseWindow) ; //Spin until coarse window is closed
+
+  //After we have gotten close to the first coarse window, proceed past the goal, then proceed to the goal
+  if (addAFullRotation == true)
+  {
+    int tempStepGoal = steps + 8400/2; //Move 50 away from current position
+    if (tempStepGoal > 8400) tempStepGoal -= 8400;
+
+    //Go to temp position
+    while (stepsRequired(steps, tempStepGoal) > coarseWindow) ;
+
+    //Go to stepGoal
+    while (stepsRequired(steps, stepGoal) > coarseWindow) ; //Spin until coarse window is closed
+  }
+
+  setMotorSpeed(fineSpeed); //Slowly approach
+
+  while (stepsRequired(steps, stepGoal) > fineWindow) ; //Spin until fine window is closed
+
+  setMotorSpeed(0); //Stop
+
+  delay(timeMotorStop); //Wait for motor to stop
+
+  int delta = steps - stepGoal;
+
+  /*if (direction == CW) Serial.print("CW ");
+    else Serial.print("CCW ");
+    Serial.print("stepGoal: ");
+    Serial.print(stepGoal);
+    Serial.print(" / Final steps: ");
+    Serial.print(steps);
+    Serial.print(" / delta: ");
+    Serial.print(delta);
+    Serial.println();*/
+
+  return (delta);
+}
+
 //-----------------------------------------------------
 
 void enableMotor(){
@@ -119,6 +195,13 @@ int setDial(int dialValue, boolean extraSpin)
 
 //-----------------------------------------------------
 
+void setMotorSpeed(int speedValue)
+{
+  analogWrite(motorControl, speedValue);
+}
+
+//-----------------------------------------------------
+
 //Given an encoder value, tell me where on the dial that equates
 //Returns 0 to 99
 //If there are 100 numbers on the dial, each number is 84 ticks wide
@@ -161,13 +244,16 @@ void setup() {
 
   pinMode(photo, INPUT_PULLUP);
   pinMode(motorDir, OUTPUT);
-  pinMode(motorControl, OUTPUT);
+  pinMode(motorControl, OUTPUT);    //motorPWM
   pinMode(motorReset, OUTPUT);
 
   enableMotor();
   Serial.begin(9600);
   Serial.println();
   Serial.println("Safe Cracker");
+
+  //Load settings from EEPROM
+   homeOffset = EEPROM.read(LOCATION_HOME_OFFSET);
 
 }
 
