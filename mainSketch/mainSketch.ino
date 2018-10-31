@@ -1,4 +1,5 @@
 #include <EEPROM.h>
+#include <Servo.h>
 
 #define CCW 0
 #define CW 1
@@ -248,7 +249,7 @@ void setup() {
   pinMode(motorReset, OUTPUT);
 
   enableMotor();
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.println();
   Serial.println("Safe Cracker");
 
