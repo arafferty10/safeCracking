@@ -209,6 +209,20 @@ int gotoStep(int stepGoal, boolean addFullRotation){
   return (delta);
 }
 
+
+// Go to given dial
+int setDial(int dialValue, boolean extraRoto){
+
+  // convert given dial to encoder steps
+  int encoderValue = dialToEncoder(dialValue);
+
+  gotoStep(encoderValue, extraRoto); // go to encoder value
+
+  int actualDialValue = encoderToDial(steps); // convert landed encoder value to a dial value
+
+  return (actualDialValue);
+}
+
 void setup() {
   // put your setup code here, to run once:
 
