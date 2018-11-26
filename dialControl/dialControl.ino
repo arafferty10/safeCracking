@@ -11,10 +11,14 @@ volatile int steps = 0;
 boolean dir = CW; // default direction (also direction for first digit of combo)
 boolean prevDir = CW;
 
+
+const int timeMotorStop = 125; // ms for motor to stop spinning after stop command
+
+
 int homeOffset = 0; // Found running findFlag()
 
 // Looks to see if the photogate has been triggered by the coupler flag
-boolean flagDetected() { 
+boolean flagDetected() {
   if( digitalRead(photoGate) == LOW ){
     return (true);
   }
@@ -29,7 +33,7 @@ void setMotorSpeed(int speed){
 // Tells motor to turn clockwise
 void turnCW() {
   dir = CW;
-  digitalWrite(motorDir, HIGH); 
+  digitalWrite(motorDir, HIGH);
 }
 
 // Tells motor to turn counter clockwise
@@ -58,13 +62,13 @@ int dialToEncoder(int dialValue){
     Serial.println(encoderValue);
     while(1);
   }
-  
+
   return (dialValue * 84);
 }
 
 // For a given encoder value, convert to dial number (0 - 99)
 int encoderToDial(int encoderValue){
-  
+
   int dialValue = encoderValue / 84;
   int partial = encoderValue % 84;
 
@@ -77,6 +81,51 @@ int encoderToDial(int encoderValue){
   }
 
   return (dialValue);
+}
+
+// Spins until photogate is triggered
+void findFlag(){
+
+  // search speeds
+  int fast = 255;
+  int slow = 50;
+
+  // check to see if PG is already triggered, if so, move away
+  if(flagDetected() == true){
+    Serial.println("Already close to photogate, must move away");
+    int current = encoderToDial(steps);
+    current += 50; // since we're close, move away 50 ticks
+
+    if(current > 100) { // if we're out of bounds of dial
+      current -= 100;
+    }
+    setDial(current, false); // finally move away from PG
+  }
+
+  // Begin search
+  setMotorSpeed(fast);
+
+
+  while(flagDetected() == false){ // spin away!
+    delayMicroseconds(1);
+  }
+
+  // Just skipped past the PG, stop and turn around slowly
+  setMotorSpeed(0); // motor stop
+  delay(timeMotorStop); // give the motor a chance to brake
+  turnCCW(); // and change direction
+
+  setMotorSpeed(slow);
+  while(flagDetected() == false){
+    delayMicroseconds(1);
+  }
+  setMotorSpeed(0);
+  delay(timeMotorStop);
+
+  // adjust for offset
+  steps = (84 * homeOffset);
+
+  prevDir = CCW;
 }
 
 void setup() {
