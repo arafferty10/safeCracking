@@ -128,6 +128,21 @@ void findFlag(){
   prevDir = CCW;
 }
 
+// Find number of steps between current position and goal
+int stepsRequired(int current, int goal){
+  if(dir == CW){
+    // if current pos is above our goal, req steps is difference
+    // between current and our goal
+    if(current >= goal) return (current - goal);
+    else if(current < goal) return (8400 - goal + current); // wee need to wrap around
+  }
+  else if(dir == CCW){
+    if(current >= goal) return (8400 - goal + current);
+    else if(current < goal) return (goal - current);
+  }
+
+}
+
 void setup() {
   // put your setup code here, to run once:
 
