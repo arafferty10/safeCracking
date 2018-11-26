@@ -171,8 +171,42 @@ int gotoStep(int stepGoal, boolean addFullRotation){
   int fineWindow = 32;
 
   // Account for slack in encoder
+  if(dir == CW && prevDir == CCW){
+    steps += switchDirAdjustment;
+    if(steps > 8400) steps -= 8400;
+    prevDir = CW;
+  }
+  else if(dir == CCW && prevDir == CW){
+    steps -= switchDirAdjustment;
+    if(steps < 0) steps += 8400;
+    prevDir = CCW;
+  }
 
+  setMotorSpeed(coarse); // Lets start looking!
+  while(stepsRequired(steps, stepGoal) > coarseWindow); // Spin until we get within coarse search window
 
+  // after getting close, move past goal, then go to goal (add a full rotation)
+  if(addFullRotation == true){
+    int tempStepGoal = steps + 8400/2; // moves away 50 ticks from current position
+    if(tempStepGoal > 8400) tempStepGoal -= 8400; // account for full roto
+
+    // run to temp pos
+    while(stepsRequired(steps, tempStepGoal) > coarseWindow);
+
+    // go to stepGoal
+    while(stepsRequired(steps, stepGoal) > coarseWindow);
+  }
+
+  setMotorSpeed(fine); // slow down for fine search
+
+  while(stepsRequired(steps, stepGoal) > fineWindow); // run until within fine window
+
+  setMotorSpeed(0); // STOP
+  delay(timeMotorStop);
+
+  int delta = steps - stepGoal; // distance we've gone
+
+  return (delta);
 }
 
 void setup() {
