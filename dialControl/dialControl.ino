@@ -11,6 +11,7 @@ volatile int steps = 0;
 boolean dir = CW; // default direction (also direction for first digit of combo)
 boolean prevDir = CW;
 
+int switchDirAdjustment = (84 * 0) + 0;
 
 const int timeMotorStop = 125; // ms for motor to stop spinning after stop command
 
@@ -50,6 +51,22 @@ void motorOn(){
 // Turn motor controller off
 void motorOff(){
   digitalWrite(motorReset, LOW);
+}
+
+
+// Encoder counting interrupts
+void countA(){
+  if(dir == CW) steps--;
+  else steps++;
+  if(steps < 0) steps = 8399; // limit to zeero
+  if(steps > 8399) steps = 0; //limit to 8399
+}
+
+void countB(){
+  if(dir == CW) steps--;
+  else steps++;
+  if(steps < 0) steps = 8399; // limit to zeero
+  if(steps > 8399) steps = 0; //limit to 8399
 }
 
 // For a given dial value, convert to encoder value (0 - 8400)
@@ -140,6 +157,21 @@ int stepsRequired(int current, int goal){
     if(current >= goal) return (8400 - goal + current);
     else if(current < goal) return (goal - current);
   }
+
+}
+
+// Go to given step value, adds full 360 rotation if desired
+// Assumes direction previously set
+int gotoStep(int stepGoal, boolean addFullRotation){
+
+  // search speeds and window to account for motor/encoder slack
+  int coarse = 200;
+  int coarseWindow = 1250;
+  int fine = 50;
+  int fineWindow = 32;
+
+  // Account for slack in encoder
+
 
 }
 
