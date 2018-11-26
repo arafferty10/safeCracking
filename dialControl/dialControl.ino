@@ -223,6 +223,33 @@ int setDial(int dialValue, boolean extraRoto){
   return (actualDialValue);
 }
 
+
+// Resets dial
+// Rotate CCW past zero, then continue until zero again
+void resetDial(){
+  motorOff();
+
+  turnCCW();
+
+  setMotorSpeed(255); // Speed racer
+  motorOn();
+
+  // run for 'two' complete rotations
+  int deltaSteps = 0;
+  while(deltaSteps < (8400 * 2)){
+    int startingSteps = steps; // where we started
+    delay(100); // spin for a bit
+
+    if(steps >= startingSteps) deltaSteps += steps - startingSteps;
+    else deltaSteps += (8400 - startingSteps + steps);
+  }
+
+  setMotorSpeed(0);
+  delay(timeMotorStop);
+
+  prevDir = CCW;
+}
+
 void setup() {
   // put your setup code here, to run once:
 
