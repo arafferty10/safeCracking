@@ -285,7 +285,7 @@ void loop() {
     {
       Serial.println("Case 1!");
       Serial.print("Rotating...");
-      rotateCCW(32);
+      rotateCCW(1000);
     }
     else if(incoming == '2')
     {

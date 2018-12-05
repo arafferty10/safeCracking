@@ -21,6 +21,7 @@ int homeOffset = 0; // Found running findFlag()
 // Looks to see if the photogate has been triggered by the coupler flag
 boolean flagDetected() {
   if( digitalRead(photoGate) == LOW ){
+    Serial.println("**PHOTOGATE TRIPPED**");
     return (true);
   }
   return (false);
@@ -252,10 +253,104 @@ void resetDial(){
 
 void setup() {
   // put your setup code here, to run once:
+  pinMode(photoGate, INPUT_PULLUP);
+  pinMode(motorDir, OUTPUT);
+  pinMode(motorControl, OUTPUT);
+  pinMode(motorReset, OUTPUT);
 
+  motorOn();
+  Serial.begin(115200);
+  Serial.println();
+  Serial.println("Safe Cracker");
+
+  
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+
+  char incoming;
+
+  // Print text menu
+  Serial.println();
+  Serial.println("Main Menu");
+  Serial.println(F("1. Rotate motor"));
+  Serial.println(F("2. Detech Flag"));
+  Serial.println(F("3. Set Starting Dial Value/Go Home"));
+  Serial.println(F("4. placeholder option"));
+  Serial.println(F("5. placeholder option"));
+  Serial.println(F("6. Start Cracking!"));
+  Serial.println();
+  Serial.println(F("Enter your choice"));
+
+  while(!Serial.available());
+
+
+  incoming = Serial.read();
+
+  // while(!Serial.available()){
+    if(incoming == '1')
+    {
+      Serial.println("Case 1!");
+      Serial.print("Rotating...");
+//      rotateCCW(1000);
+    }
+    else if(incoming == '2')
+    {
+      findFlag();
+      Serial.println("Case 2!");
+    }
+    //-----------------------------------------------------
+    else if(incoming == '3')
+    {
+      Serial.println("Case 3!");
+      //Go to starting conditions
+      findFlag(); //Detect the flag and center the dial based on it
+
+      Serial.print(F("Offset from home is: "));
+      Serial.println(homeOffset);
+
+      int zeroLocation = 0;
+
+      while (1) //Error checking
+      {
+        Serial.print(F("Enter where dial is actually at: "));
+
+        while (!Serial.available()); //Wait for user input
+
+        Serial.setTimeout(1000);
+        zeroLocation = Serial.parseInt(); //Read user input
+
+        Serial.print(zeroLocation);
+
+        //Check to make sure the user input is in bounds
+        if (zeroLocation >= 0 && zeroLocation <= 99) break;
+        Serial.println(F(" out of bounds"));
+      }
+
+      homeOffset = zeroLocation;
+
+      Serial.print(F("\n\rSetting home offset to: "));
+      Serial.println(homeOffset);
+
+//      EEPROM.write(LOCATION_HOME_OFFSET, homeOffset);
+
+      //Adjust steps with the real-world offset
+      steps = (84 * homeOffset); //84 * the number the dial sits on when 'home'
+
+      setDial(0, false); //Turn to zero
+
+      Serial.println(F("Dial should be at: 0"));
+
+    }
+    //-----------------------------------------------------
+    else if(incoming == '4')
+    {
+      Serial.println("Case 4!");
+    }
+    else
+    {
+      Serial.print("Unknown Option: ");
+      Serial.println(incoming, HEX);
+    }
 
 }
