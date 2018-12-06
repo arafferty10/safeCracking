@@ -263,6 +263,8 @@ void setup() {
   Serial.println();
   Serial.println("Safe Cracker");
 
+  attachInterrupt(digitalPinToInterrupt(2), countA, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(3), countB, CHANGE);
   
 }
 
@@ -273,8 +275,8 @@ void loop() {
   // Print text menu
   Serial.println();
   Serial.println("Main Menu");
-  Serial.println(F("1. Rotate motor"));
-  Serial.println(F("2. Detech Flag"));
+  Serial.println(F("1. Go home | Reset Dial"));
+  Serial.println(F("2. Go to specific dial number"));
   Serial.println(F("3. Set Starting Dial Value/Go Home"));
   Serial.println(F("4. placeholder option"));
   Serial.println(F("5. placeholder option"));
@@ -290,14 +292,47 @@ void loop() {
   // while(!Serial.available()){
     if(incoming == '1')
     {
-      Serial.println("Case 1!");
-      Serial.print("Rotating...");
+      findFlag();
+      Serial.print("Home offset: ");
+      Serial.println(homeOffset);
+
+      int zeroLocation = 0;
+
+      while(1){
+        Serial.print("Enter where dial is actually at: ");
+
+        while(!Serial.available());
+
+        Serial.setTimeout(1000);
+        zeroLocation = Serial.parseInt();
+
+        Serial.print(zeroLocation);
+        if(zeroLocation >= 0 && zeroLocation <= 99) break;
+        Serial.println(" out of bounds");
+      }
+      
+      homeOffset = zeroLocation;
+      Serial.print("Setting home offset to: ");
+      Serial.println(homeOffset);
+
+      steps = (84 * homeOffset);
+
+      setDial(0,false);
+      Serial.println("Dial should be at: 0");
+//      Serial.println("Case 1!");
+//      Serial.print("Rotating...");
 //      rotateCCW(1000);
     }
     else if(incoming == '2')
     {
-      findFlag();
-      Serial.println("Case 2!");
+      Serial.println("Enter a dial number ");
+      Serial.setTimeout(2000);
+      int reqPos = Serial.parseInt();
+
+      Serial.print("Going to dial position: ");
+      Serial.println(reqPos);
+
+      setDial(reqPos,0);
     }
     //-----------------------------------------------------
     else if(incoming == '3')
@@ -346,6 +381,7 @@ void loop() {
     else if(incoming == '4')
     {
       Serial.println("Case 4!");
+      setDial(50, 0);
     }
     else
     {
