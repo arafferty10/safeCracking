@@ -75,8 +75,8 @@ void loop() {
   Serial.println("Main Menu");
   Serial.println(F("1. Go home | Reset Dial"));
   Serial.println(F("2. Go to specific dial number"));
-  Serial.println(F("3. Set Dial to 54"));
-  Serial.println(F("4. Display current step counter value"));
+  Serial.println(F("3. Dial position testing"));
+  Serial.println(F("4. Measure indents"));
   Serial.println(F("5. Position Testing"));
   Serial.println(F("6. Servo Testing"));
   Serial.println();
@@ -129,23 +129,21 @@ void loop() {
       Serial.print("Going to dial position: ");
       Serial.println(reqPos);
 
-      setDial(reqPos,0);
+      setDial(reqPos,false);
     }
     //-----------------------------------------------------
     else if(incoming == '3')
     {
-      Serial.print("Steps required for movement: ");
-      Serial.println(stepsRequired(0, 54));
-      setDial(54,false);
+      Serial.println("Dial positioning test");
+      positionTesting(); // will pick random locations on the dial and see if we can go to them
 
     }
     //-----------------------------------------------------
     else if(incoming == '4')
     {
-      Serial.println("Case 4!");
-//      setDial(50, 0);
-      Serial.print("Step number: ");
-      Serial.println(steps);
+      Serial.println("Measure Indents");
+//      Serial.println("Case 4!");
+      
     }
     else if(incoming == '5')
     {
