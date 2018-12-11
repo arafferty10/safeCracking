@@ -238,3 +238,29 @@ void resetDial(){
 
   prevDir = CCW;
 }
+
+void positionTesting()
+{
+  int randomDial;
+
+  for (int x = 0 ; x < 2 ; x++)
+  {
+    randomDial = random(0, 100);
+//    randomDial = 25;
+    turnCCW();
+    setDial(randomDial, true);
+
+    Serial.print(F("Dial should be at: "));
+    Serial.println(encoderToDial(steps));
+//    messagePause("Verify then press key to continue");
+
+    randomDial = random(0, 100);
+//    randomDial = 75;
+    turnCW();
+    setDial(randomDial, false);
+
+    Serial.print(F("Dial should be at: "));
+    Serial.println(encoderToDial(steps));
+//    messagePause("Verify then press key to exit");
+  }
+}

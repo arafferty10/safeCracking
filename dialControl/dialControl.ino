@@ -1,3 +1,6 @@
+#include <Servo.h>
+#include <EEPROM.h>
+
 #define CCW 0
 #define CW 1
 
@@ -8,6 +11,9 @@ const int motorReset = 8; // motor reset pin
 const int motorDir = 10; // motor direction | HIGH - CW, LOW - CCW
 const int encA = 2;
 const int encB = 3;
+const int servoPin = 9;
+
+int testSpots[] = {99, 8, 16, 24, 33, 41, 50, 58, 66, 74, 83, 91}; 
 
 volatile int steps = 0;
 
@@ -19,7 +25,15 @@ int switchDirAdjustment = (84 * 0) + 0;
 
 const int timeMotorStop = 125; // ms for motor to stop spinning after stop command
 
+int servoRestingPosition = 0;
+int servoTryPosition = 50;
+int servoHighPressurePosition = 40;
 
+const int timeServoApply = 350;
+const int timeServoRelease = 250;
+
+
+Servo handle;
 
 
 void setup() {
@@ -28,7 +42,7 @@ void setup() {
   pinMode(motorDir, OUTPUT);
   pinMode(motorControl, OUTPUT);
   pinMode(motorReset, OUTPUT);
-
+//  handle.attach(servoPin);
   motorOn();
   Serial.begin(115200);
   Serial.println();
@@ -50,8 +64,8 @@ void loop() {
   Serial.println(F("2. Go to specific dial number"));
   Serial.println(F("3. Set Dial to 54"));
   Serial.println(F("4. Display current step counter value"));
-  Serial.println(F("5. placeholder option"));
-  Serial.println(F("6. Start Cracking!"));
+  Serial.println(F("5. Position Testing"));
+  Serial.println(F("6. Servo Testing"));
   Serial.println();
   Serial.println(F("Enter your choice"));
 
@@ -120,7 +134,13 @@ void loop() {
       Serial.print("Step number: ");
       Serial.println(steps);
     }
-    else
+    else if(incoming == '5')
+    {
+      Serial.println("Case 5!");
+      positionTesting();
+    } else if(incoming == '6'){
+      
+    }
     {
       Serial.print("Unknown Option: ");
       Serial.println(incoming, HEX);
