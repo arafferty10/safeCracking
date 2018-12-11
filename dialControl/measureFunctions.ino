@@ -126,7 +126,49 @@ void measureIndent(int &indentLocation, int &indentWidth){
   setMotorSpeed(0);
   delay(timeMotorStop);
 
+  steps -= switchDirAdjustment;
+  if(steps < 0) steps += 8400;
+  
+  edgeNear = steps; // record positon
 
+  // time for a second reading
+  turnCW();
+  prevDir = CW;
 
+  setMotorSpeed(slowSearch);
+
+  timeSinceLastMovement = millis();
+  lastStep = steps;
+  
+  while(1){
+    if(lastStep != steps){
+      lastStep = steps;
+      timeSinceLastMovement = millis();  
+    }
+    if(millis() - timeSinceLastMovement > 10) break;    
+  }
+  setMotorSpeed(0);
+  delay(timeMotorStop);
+
+  steps -= switchDirAdjustment;
+  if(steps < 0) steps += 8400;
+
+  int edgeFar2 = steps; // record easurement
+
+  int sizeOfIndent;
+  if(edgeFar2 > edgeNear) sizeOfIndent = 8400 - edgeFar2 + edgeNear;
+  else sizeOfIndent = edgeNear - edgeFar2;
+
+  indentWidth += sizeOfIndent;
+
+  indentLocation = edgeFar2 + (sizeOfIndent / 2); // find center of indent
+  if(indentLocation >= 8400) indentLocation -= 8400;
+
+  turnCCW();
+  prevDir = CCW;
+
+  gotoStep(indentLocation, false);
+  handle.write(servoRestingPosition);
+  delay(timeServoRelease * 2);
   
 }
