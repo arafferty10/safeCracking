@@ -142,17 +142,16 @@ void loop() {
     else if(incoming == '4')
     {
       Serial.println("Measure Indents");
-//      Serial.println("Case 4!");
-      
+
+
     }
     else if(incoming == '5')
     {
       Serial.println("Case 5!");
-      positionTesting();
+      
     } else if(incoming == '6'){
       
-    }
-    {
+    } else{
       Serial.print("Unknown Option: ");
       Serial.println(incoming, HEX);
     }
