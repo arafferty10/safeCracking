@@ -1,5 +1,8 @@
-#include <Servo.h>
 #include <EEPROM.h>
+#include <Servo.h>
+#include "eeprom_loc.h"
+
+Servo handle;
 
 #define CCW 0
 #define CW 1
@@ -14,6 +17,10 @@ const int encB = 3;
 const int servoPin = 9;
 
 int testSpots[] = {99, 8, 16, 24, 33, 41, 50, 58, 66, 74, 83, 91}; 
+boolean indentsToTry[12];
+int indentWidths[12];
+int indentLocations[12];
+
 
 volatile int steps = 0;
 
@@ -25,16 +32,12 @@ int switchDirAdjustment = (84 * 0) + 0;
 
 const int timeMotorStop = 125; // ms for motor to stop spinning after stop command
 
-int servoRestingPosition = 0;
-int servoTryPosition = 50;
-int servoHighPressurePosition = 40;
+int servoRestingPosition = 0; // handle, at rest position
+int servoTryPosition = 50; // position when measuring
+int servoHighPressurePosition = 60; // position when opening safe
 
 const int timeServoApply = 350;
 const int timeServoRelease = 250;
-
-
-Servo handle;
-
 
 void setup() {
   // put your setup code here, to run once:
@@ -50,6 +53,16 @@ void setup() {
 
   attachInterrupt(digitalPinToInterrupt(encA), countA, CHANGE);
   attachInterrupt(digitalPinToInterrupt(encB), countB, CHANGE);
+
+  // Load settings from EEPROM
+  EEPROM.get(LOCATION_HOME_OFFSET, homeOffset); // read in homeOffset
+  Serial.print("Home offset: ");
+  Serial.println(homeOffset);
+
+  // Init dial -> find home, set offset, go to zero
+  findFlag();
+  steps = (84 * homeOffset);
+  setDial(0, false);
   
 }
 
