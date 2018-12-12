@@ -170,5 +170,20 @@ void measureIndent(int &indentLocation, int &indentWidth){
   gotoStep(indentLocation, false);
   handle.write(servoRestingPosition);
   delay(timeServoRelease * 2);
+
+ Serial.print("edgeNear: ");
+ Serial.print(edgeNear);
+ Serial.print(" / ");
+ Serial.println(encoderToDial(edgeNear));
+ Serial.print("edgeFar2: ");
+ Serial.print(edgeFar2);
+ Serial.print(" / ");
+ Serial.println(encoderToDial(edgeFar2));
+ //Display where the center of this indent is on the dial
+ int centerOfIndent = sizeOfIndent / 2 + edgeFar;
+ Serial.print("centerOfIndent: ");
+ Serial.print(centerOfIndent);
+ Serial.print(" / ");
+ Serial.println(encoderToDial(centerOfIndent));
   
 }

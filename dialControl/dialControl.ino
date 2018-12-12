@@ -46,6 +46,7 @@ void setup() {
   pinMode(motorControl, OUTPUT);
   pinMode(motorReset, OUTPUT);
 //  handle.attach(servoPin);
+//  handle.write(0);
   motorOn();
   Serial.begin(115200);
   Serial.println();
@@ -60,9 +61,9 @@ void setup() {
   Serial.println(homeOffset);
 
   // Init dial -> find home, set offset, go to zero
-  findFlag();
-  steps = (84 * homeOffset);
-  setDial(0, false);
+//  findFlag();
+//  steps = (84 * homeOffset);
+//  setDial(0, false);
   
 }
 
@@ -78,7 +79,8 @@ void loop() {
   Serial.println(F("3. Dial position testing"));
   Serial.println(F("4. Measure indents"));
   Serial.println(F("5. Position Testing"));
-  Serial.println(F("6. Servo Testing"));
+  Serial.println(F("6. Display Indent Center Values"));
+  Serial.println(F("7. Test servo"));
   Serial.println();
   Serial.println(F("Enter your choice"));
 
@@ -113,11 +115,13 @@ void loop() {
       Serial.print("\nSetting home offset to: ");
       Serial.println(homeOffset);
 
+      EEPROM.write(LOCATION_HOME_OFFSET, homeOffset);
+      
       steps = (84 * homeOffset);
 
       setDial(10,false);
       
-      Serial.println("Dial should be at: 0");
+      Serial.println("Dial should be at: 10");
 
     }
     else if(incoming == '2')
@@ -142,8 +146,21 @@ void loop() {
     else if(incoming == '4')
     {
       Serial.println("Measure Indents");
+      int measurements = 0;
 
+      while(1){ // waiting for good input
+        Serial.print("How many measurements would you like to take? ");
+        while(!Serial.available());
+        Serial.setTimeout(1000);
+        measurements = Serial.parseInt();
 
+        if(measurements >= 1 && measurements <= 20) break;
+
+        Serial.print(measurements);
+        Serial.println(" out of bounds");
+      }
+      Serial.println(measurements);
+      measureDiscC(measurements);
     }
     else if(incoming == '5')
     {
@@ -151,7 +168,9 @@ void loop() {
       
     } else if(incoming == '6'){
       
-    } else{
+    } else if(incoming == '7'){
+      testServo();
+    } else {
       Serial.print("Unknown Option: ");
       Serial.println(incoming, HEX);
     }
