@@ -1,5 +1,5 @@
 # Team TAL: ATLS 4519 Safecracking Fall 2018
-### Repo for SafeCracking Class -- Using Arduino and manufactured parts to open a Sentry Safe Dial Safe
+#### Repo for SafeCracking Class -- Using Arduino and manufactured parts to open a Sentry Safe Dial Safe
 
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/GAtKnZO2PP4/0.jpg)](http://www.youtube.com/watch?v=GAtKnZO2PP4 "ATLS 4519 Safe Cracking Success ")
 ###### Successful Opening Video
