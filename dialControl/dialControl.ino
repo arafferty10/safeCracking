@@ -39,6 +39,8 @@ int servoHighPressurePosition = 60; // position when opening safe
 const int timeServoApply = 350;
 const int timeServoRelease = 250;
 
+int discA, discB, discC;
+
 void setup() {
   // put your setup code here, to run once:
   pinMode(photoGate, INPUT);
@@ -81,6 +83,7 @@ void loop() {
   Serial.println(F("5. Position Testing"));
   Serial.println(F("6. Display Indent Center Values"));
   Serial.println(F("7. Test servo"));
+  Serial.println(F("8. Enter a combo"));
   Serial.println();
   Serial.println(F("Enter your choice"));
 
@@ -134,6 +137,8 @@ void loop() {
       Serial.println(reqPos);
 
       setDial(reqPos,false);
+
+      
     }
     //-----------------------------------------------------
     else if(incoming == '3')
@@ -170,6 +175,39 @@ void loop() {
       
     } else if(incoming == '7'){
       testServo();
+    } else if(incoming == '8'){
+      for (byte x = 0 ; x < 3 ; x++)
+      {
+        int combo = 0;
+        while (1) //Loop until we have good input
+        {
+          Serial.print(F("Enter Combination "));
+          if (x == 0) Serial.print("A");
+          else if (x == 1) Serial.print("B");
+          else if (x == 2) Serial.print("C");
+          Serial.print(F(" to start at: "));
+          while (!Serial.available()); //Wait for user input
+  
+          Serial.setTimeout(1000); //Must be long enough for user to enter second character
+          combo = Serial.parseInt(); //Read user input
+  
+          if (combo >= 0 && combo <= 99) break;
+  
+          Serial.print(combo);
+          Serial.println(F(" out of bounds"));
+        }
+        Serial.println(combo);
+        if (x == 0) discA = combo;
+        else if (x == 1) discB = combo;
+        else if (x == 2) discC = combo;
+      }
+    } else if(incoming =='9'){
+      turnCW();
+      setDial(discA, false);
+      turnCCW();
+      setDial(discB, true);
+      turnCW();
+      setDial(discC, false);  
     } else {
       Serial.print("Unknown Option: ");
       Serial.println(incoming, HEX);
