@@ -9,3 +9,5 @@ Parts List - https://docs.google.com/spreadsheets/d/1XabOUtS-7bFRwG6XeN5u8nKVINY
 * Aidan - https://github.com/arafferty10/personalSafeCracking
 * Toby - https://github.com/towu1344/Safe-Cracking
 
+---
+Video of final opening: https://github.com/arafferty10/safeCracking/blob/master/img/IMG_3121.mp4
