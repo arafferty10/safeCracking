@@ -1,4 +1,7 @@
-<iframe width="560" height="315" src="https://www.youtube.com/embed/GAtKnZO2PP4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+# Team TAL: ATLS 4519 Safecracking Fall 2018
+
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/GAtKnZO2PP4/0.jpg)](http://www.youtube.com/watch?v=GAtKnZO2PP4 "ATLS 4519 Safe Cracking Success ")
+###### Successful Opening Video
 
 Repo for SafeCracking Class -- Using Arduino and manufactured parts to open a Sentry Safe Dial Safe
 
